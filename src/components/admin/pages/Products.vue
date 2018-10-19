@@ -4,7 +4,8 @@
       <h2>Products</h2>
       <button class="btn btn-primary btn-small"
         data-toggle="modal"
-        data-target="#productModal" >
+        data-target="#productModal"
+        @click="openModal(true)">
         Add product
       </button>
       <table class="mt-4 table">
@@ -29,7 +30,10 @@
               <span v-else>未上架</span>
             </td>
             <td>
-              <button class="btn btn-outline-primary btn-small">
+              <button class="btn btn-outline-primary btn-small"
+              data-toggle="modal"
+              data-target="#productModal"
+              @click="openModal(false, item)">
                 編輯
               </button>
               <button class="btn btn-outline-primary btn-small">
@@ -160,6 +164,7 @@ export default {
     return {
       products: [],
       product: {},
+      isNew: false,
     };
   },
   methods: {
@@ -174,11 +179,28 @@ export default {
         }
       });
     },
+    openModal(isNew, item) {
+      this.isNew = isNew;
+
+      if (isNew) {
+        this.product = {};
+      } else {
+        this.product = {...item};
+      }
+    },
     updateProduct() {
       const vm = this;
-      const api = `${process.env.API_PATH}/api/${process.env.API_USER}/admin/product`;
-      this.$http.post(api, { data: vm.product}).then((response) => {
+      let api = `${process.env.API_PATH}/api/${process.env.API_USER}/admin/product`;
+      let apiMethod = 'post';
+
+      if (!vm.isNew) {
+        api = `${process.env.API_PATH}/api/${process.env.API_USER}/admin/product/${vm.product.id}`;
+        apiMethod = 'put';
+      }
+
+      this.$http[apiMethod](api, { data: vm.product}).then((response) => {
         $('#productModal').modal('hide');
+        vm.product = {};
         vm.getProducts();
         console.log(response.data.message);
       });
