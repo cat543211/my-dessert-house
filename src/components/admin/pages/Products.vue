@@ -71,7 +71,7 @@
                       <i class="fas fa-spinner fa-spin"></i>
                     </label>
                     <input type="file" id="customFile" class="form-control"
-                      ref="files">
+                      ref="files" @change="uploadImg">
                   </div>
                   <img img="https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=828346ed697837ce808cae68d3ddc3cf&auto=format&fit=crop&w=1350&q=80"
                     class="img-fluid" alt=""
@@ -185,7 +185,7 @@ export default {
       if (isNew) {
         this.product = {};
       } else {
-        this.product = {...item};
+        this.product = { ...item };
       }
     },
     updateProduct() {
@@ -198,11 +198,30 @@ export default {
         apiMethod = 'put';
       }
 
-      this.$http[apiMethod](api, { data: vm.product}).then((response) => {
+      this.$http[apiMethod](api, { data: vm.product }).then((response) => {
         $('#productModal').modal('hide');
         vm.product = {};
         vm.getProducts();
         console.log(response.data.message);
+      });
+    },
+    uploadImg() {
+      const api = `${process.env.API_PATH}/api/${process.env.API_USER}/admin/upload`;
+      const newImg = this.$refs.files.files[0];
+      const vm = this;
+      const formData = new FormData();
+
+      formData.append('file-to-upload', newImg);
+      this.$http.post(api, formData, {
+        headers: {
+          'Content-type': 'multipart/form-data',
+        },
+      }).then((response) => {
+        if (response.data.success) {
+          vm.$set(vm.product, 'imageUrl', response.data.imageUrl);
+        } else {
+          vm.$bus.$emit('showError', response.data.message);
+        }
       });
     },
   },
