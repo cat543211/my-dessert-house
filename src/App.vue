@@ -1,23 +1,22 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     <router-view/>
+    <Error></Error>
   </div>
 </template>
 
 <script>
+import Error from './components/share/Error';
+
 export default {
   name: 'App',
+  components: {
+    Error,
+  },
 };
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+@import './assets/all';
 </style>
+
