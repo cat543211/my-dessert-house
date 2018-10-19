@@ -32,11 +32,11 @@ router.beforeEach((to, from, next) => {
     axios.post(api).then(response => {
       if (response.data.success) {
         next();
-        console.log('跳轉成功');
       } else {
         next({
           path: '/login',
         });
+        vm.$bus.$emit('showError', response.data.message);
       }
     });
   } else {
