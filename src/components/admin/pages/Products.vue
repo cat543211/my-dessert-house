@@ -45,7 +45,7 @@
       </table>
       <!-- add product -->
       <div class="modal fade" id="productModal" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content border-0">
             <div class="modal-header bg-dark text-white">
@@ -68,7 +68,7 @@
                   </div>
                   <div class="form-group">
                     <label for="customFile">或 上傳圖片
-                      <i class="fas fa-spinner fa-spin"></i>
+                      <i v-show="status.loading" class="fas fa-spinner fa-spin"></i>
                     </label>
                     <input type="file" id="customFile" class="form-control"
                       ref="files" @change="uploadImg">
@@ -165,6 +165,9 @@ export default {
       products: [],
       product: {},
       isNew: false,
+      status: {
+        loading: false,
+      },
     };
   },
   methods: {
@@ -202,7 +205,7 @@ export default {
         $('#productModal').modal('hide');
         vm.product = {};
         vm.getProducts();
-        console.log(response.data.message);
+        !response.data.message && vm.$bus.$emit('showError', response.data.message);
       });
     },
     uploadImg() {
@@ -210,6 +213,8 @@ export default {
       const newImg = this.$refs.files.files[0];
       const vm = this;
       const formData = new FormData();
+
+      vm.status.loading = true;
 
       formData.append('file-to-upload', newImg);
       this.$http.post(api, formData, {
@@ -222,6 +227,7 @@ export default {
         } else {
           vm.$bus.$emit('showError', response.data.message);
         }
+        vm.status.loading = false;
       });
     },
   },
