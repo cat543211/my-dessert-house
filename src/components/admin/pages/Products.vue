@@ -182,14 +182,19 @@
         </div>
       </div>
     </div>
+    <Pager :pager="pager" @getPage="getProducts" />
   </div>
 
 </template>
 
 <script>
 import $ from 'jquery';
+import Pager from '@/components/admin/Pager';
 
 export default {
+  components: {
+    Pager,
+  },
   data() {
     return {
       products: [],
@@ -198,15 +203,17 @@ export default {
       status: {
         loading: false,
       },
+      pager: {},
     };
   },
   methods: {
-    getProducts() {
+    getProducts(page = 1) {
       const vm = this;
-      const api = `${process.env.API_PATH}/api/${process.env.API_USER}/admin/products/all`;
+      const api = `${process.env.API_PATH}/api/${process.env.API_USER}/admin/products?page=${page}`;
       this.$http.get(api).then((response) => {
         if (response.data.success) {
           vm.products = response.data.products;
+          vm.pager = response.data.pagination;
         } else {
           vm.$bus.$emit('showError', response.data.message);
         }
@@ -262,10 +269,10 @@ export default {
     },
     removeProduct(isDelete) {
       const vm = this;
-      const api = `${process.env.API_PATH}/api/${process.env.API_USER}/admin/product/${vm.product.id}`
+      const api = `${process.env.API_PATH}/api/${process.env.API_USER}/admin/product/${vm.product.id}`;
       if (isDelete) {
         this.$http.delete(api).then((response) => {
-          if(response.data.success) {
+          if (response.data.success) {
             vm.getProducts();
             $('#delModal').modal('hide');
           } else {
@@ -275,7 +282,7 @@ export default {
       } else {
         vm.product = {};
       }
-    }
+    },
   },
   created() {
     this.getProducts();
