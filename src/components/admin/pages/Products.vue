@@ -36,7 +36,10 @@
               @click="openModal(false, item)">
                 編輯
               </button>
-              <button class="btn btn-outline-primary btn-small">
+              <button class="btn btn-outline-primary btn-small"
+              @click="openModal(false, item)"
+              data-toggle="modal"
+              data-target="#delModal">
                 刪除
               </button>
             </td>
@@ -151,6 +154,33 @@
           </div>
         </div>
       </div>
+
+      <!-- remove -->
+      <div class="modal fade" id="delModal" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content border-0">
+            <div class="modal-header bg-danger text-white">
+              <h5 class="modal-title" id="exampleModalLabel">
+                <span>刪除產品</span>
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              是否刪除 <strong class="text-danger">{{ product.title }}</strong> 商品(刪除後將無法恢復)。
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"
+              @click="removeProduct(false)">取消</button>
+              <button type="button" class="btn btn-danger"
+              @click="removeProduct(true)"
+                >確認刪除</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -230,6 +260,22 @@ export default {
         vm.status.loading = false;
       });
     },
+    removeProduct(isDelete) {
+      const vm = this;
+      const api = `${process.env.API_PATH}/api/${process.env.API_USER}/admin/product/${vm.product.id}`
+      if (isDelete) {
+        this.$http.delete(api).then((response) => {
+          if(response.data.success) {
+            vm.getProducts();
+            $('#delModal').modal('hide');
+          } else {
+            vm.$bus.$emit('showError', response.data.message);
+          }
+        });
+      } else {
+        vm.product = {};
+      }
+    }
   },
   created() {
     this.getProducts();
