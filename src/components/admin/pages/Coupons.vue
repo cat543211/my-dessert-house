@@ -4,7 +4,8 @@
       <h2>Coupons</h2>
       <button class="btn btn-primary btn-small"
       data-toggle="modal"
-      data-target="#couponModal">
+      data-target="#couponModal"
+      @click.prevent="openModal(true)">
         Add coupons
       </button>
       <table class="mt-4 table" v-if="coupons">
@@ -29,7 +30,10 @@
               <span v-else>未上架</span>
             </td>
             <td>
-              <button class="btn btn-outline-primary btn-small">
+              <button class="btn btn-outline-primary btn-small"
+              data-toggle="modal"
+              data-target="#couponModal"
+              @click.prevent="openModal(false, coupon)">
                 編輯
               </button>
               <button class="btn btn-outline-primary btn-small">
@@ -149,24 +153,40 @@ export default {
       const y = date.getFullYear();
       const m = date.getMonth() + 1;
       const d = date.getDate();
-      return `${y} / ${m} / ${d}`;
+      return `${y}-${m >= 10 ? '' : 0}${m}-${d >= 10 ? '' : 0}${d}`;
+    },
+    openModal(isNew, coupon) {
+      this.isNew = isNew;
+      if (isNew) {
+        this.coupon = {};
+        this.coupon.percent = 100;
+        const timestamp = +new Date() / 1000;
+        this.due_time = this.showDueDate(timestamp);
+      } else {
+        this.coupon = { ...coupon };
+        this.due_time = this.showDueDate(coupon.due_date);
+      }
     },
     updateCoupon() {
       const vm = this;
-      const api = `${process.env.API_PATH}/api/${process.env.API_USER}/admin/coupon`;
-      const timestamp = + new Date(vm.due_time) / 1000;
+      let api = `${process.env.API_PATH}/api/${process.env.API_USER}/admin/coupon`;
+      let apiMethod = 'post';
+      const timestamp = +new Date(vm.due_time) / 1000;
 
       vm.coupon.due_date = timestamp;
 
-      this.$http.post(api, { data: vm.coupon }).then((response) => {
+      if (!vm.isNew) {
+        api = `${process.env.API_PATH}/api/${process.env.API_USER}/admin/coupon/${vm.coupon.id}`;
+        apiMethod = 'put';
+      }
+
+      this.$http[apiMethod](api, { data: vm.coupon }).then((response) => {
         if (response.data.success) {
           vm.getCoupons();
         } else {
           vm.$bus.$emit('showError', response.data.message);
         }
         $('#couponModal').modal('hide');
-        vm.coupon = {};
-        vm.coupon.percent = 100;
       });
     },
   },
