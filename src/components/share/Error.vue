@@ -33,7 +33,8 @@ export default {
       const vm = this;
       setTimeout(() => {
         this.messages.forEach((msg, i) => {
-          item === msg.timestamp && vm.messages.splice(i, 1);
+          const isTimestampMatch = item === msg.timestamp;
+          if (isTimestampMatch) { vm.messages.splice(i, 1); }
         });
       }, 3000);
     },

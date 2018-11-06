@@ -242,7 +242,8 @@ export default {
         $('#productModal').modal('hide');
         vm.product = {};
         vm.getProducts();
-        !response.data.message && vm.$bus.$emit('showError', response.data.message);
+        const isError = !response.data.message;
+        if (isError) { vm.$bus.$emit('showError', response.data.message); }
       });
     },
     uploadImg() {
