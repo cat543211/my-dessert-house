@@ -1,1 +1,32 @@
 @import '~bootstrap/scss/bootstrap';
+@import './var.scss';
+
+// $main_red: #ffc1cf;
+// $main_blue: #cdf2f1;
+// $main_black: #333;
+// $main_gray: #aaa;
+
+.main {
+  max-width: 1170px;
+
+  p,
+  h4,
+  a,
+  span,
+  li,
+  button {
+    @include font_r;
+  }
+
+  h1 {
+    @include font_eb;
+  }
+
+  h2 {
+    @include font_b;
+  }
+
+  h3 {
+    @include font_b($font_size: 15px);
+  }
+}
