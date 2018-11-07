@@ -8,7 +8,7 @@
         <router-link class="nav-link" to="/products">Products</router-link>
       </li>
       <li class="nav-item">
-        <router-link class="nav-link" to="/">Coupons</router-link>
+        <router-link class="nav-link" to="/coupons">Coupons</router-link>
       </li>
       <li class="nav-item">
         <router-link class="nav-link" to="/">Cart</router-link>
@@ -16,9 +16,3 @@
     </ul>
   </div>
 </template>
-
-<script>
-export default {
-
-}
-</script>

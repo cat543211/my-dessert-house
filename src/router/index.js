@@ -9,6 +9,7 @@ import AdminProducts from '@/components/admin/pages/Products';
 // shop
 import Index from '@/components/shop/Index';
 import Products from '@/components/shop/pages/Products';
+import Coupons from '@/components/shop/pages/Coupons';
 
 Vue.use(Router);
 
@@ -28,6 +29,11 @@ export default new Router({
           path: 'products',
           name: 'Products',
           component: Products,
+        },
+        {
+          path: 'coupons',
+          name: 'Coupons',
+          component: Coupons,
         },
       ],
     },
