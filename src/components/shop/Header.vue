@@ -23,7 +23,7 @@
   border-bottom: 1px solid $main_light_gray;
 }
 
-.router-link-active {
+.router-link-exact-active {
   @include font_b($font_size: 15px);
 }
 </style>
