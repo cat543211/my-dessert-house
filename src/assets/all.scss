@@ -5,9 +5,14 @@
 // $main_blue: #cdf2f1;
 // $main_black: #333;
 // $main_gray: #aaa;
+* {
+  transition: all 0.5s;
+}
 
 .main {
-  max-width: 1170px;
+  // max-width: 1920px;
+  background: #fff;
+  padding: 0;
 
   p,
   h4,
@@ -28,5 +33,37 @@
 
   h3 {
     @include font_b($font_size: 15px);
+  }
+
+  ul,
+  li {
+    list-style: none;
+  }
+
+  a {
+    text-decoration: none;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      height: 2px;
+      background: $main_black;
+      width: 0;
+      left: 0;
+      top: 50%;
+      transition: all 0.5s;
+    }
+  }
+
+  a:hover::after {
+    width: 100%;
+  }
+
+  .menu_list {
+    @include font_eb($font_size: 40px);
+    &::after {
+      height: 5px;
+    }
   }
 }

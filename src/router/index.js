@@ -8,6 +8,7 @@ import AdminOrders from '@/components/admin/pages/Orders';
 import AdminProducts from '@/components/admin/pages/Products';
 // shop
 import Index from '@/components/shop/Index';
+import Home from '@/components/shop/pages/Home';
 import Products from '@/components/shop/pages/Products';
 import Coupons from '@/components/shop/pages/Coupons';
 
@@ -16,19 +17,20 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: '*',
-      name: 'Index',
-      component: Index,
-    },
-    {
       path: '/',
       name: 'Index',
       component: Index,
       children: [
         {
-          path: 'products',
+          path: '',
+          name: 'Home',
+          component: Home,
+        },
+        {
+          path: 'products/:status?',
           name: 'Products',
           component: Products,
+          props: true,
         },
         {
           path: 'coupons',
