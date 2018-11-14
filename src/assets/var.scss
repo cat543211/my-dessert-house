@@ -1,6 +1,36 @@
 /* resources.scss */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700,800');
+@import '~bootstrap/scss/mixins';
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
 
+// color
 $main_red: #ffc1cf;
 $main_blue: #cdf2f1;
 $main_black: #333;
 $main_gray: #aaa;
+$main_light_gray: #efefef;
+
+// font
+$openSans: 'Open Sans', sans-serif;
+
+@mixin font_r($font_color: $main_black) {
+  font-family: $openSans;
+  color: $font_color;
+  font-weight: 400;
+  font-size: 15px;
+}
+
+@mixin font_b($font_color: $main_black, $font_size: 20px) {
+  font-family: $openSans;
+  color: $font_color;
+  font-weight: 700;
+  font-size: $font_size;
+}
+
+@mixin font_eb($font_color: $main_black, $font_size: 25px) {
+  font-family: $openSans;
+  color: $font_color;
+  font-weight: 800;
+  font-size: $font_size;
+}
