@@ -13,13 +13,16 @@
       <div class="col-12 justify-content-sm-center">
         <ul class="products_menu col-10 offset-2 ">
           <li @mouseover="bgType = 1">
-            <router-link class="menu_list" :to="{name: 'Products', params: { status: 'cake' }}">Cup Cakes</router-link>
+            <router-link class="menu_list"
+            :to="{name: 'Products', params: { status: 'cake' }}">Cup Cakes</router-link>
           </li>
           <li @mouseover="bgType = 2">
-            <router-link class="menu_list" :to="{name: 'Products', params: { status: 'donut' }}">Donuts</router-link>
+            <router-link class="menu_list"
+            :to="{name: 'Products', params: { status: 'donut' }}">Donuts</router-link>
           </li>
           <li @mouseover="bgType = 3">
-            <router-link class="menu_list" :to="{name: 'Products', params: { status: 'sweet' }}">Sweet</router-link>
+            <router-link class="menu_list"
+            :to="{name: 'Products', params: { status: 'sweet' }}">Sweet</router-link>
           </li>
         </ul>
       </div>
@@ -33,13 +36,7 @@ export default {
       bgType: 1,
     };
   },
-  computed: {
-
-  },
-  methods: {
-
-  },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -81,7 +78,7 @@ export default {
   opacity: 0.5;
 
   @include media-breakpoint-down(sm) {
-    @include font_eb($font_color: #555, $font_size: 30px);
+    @include font_eb($font_size: 30px);
     margin-top: 20px;
   }
 }
