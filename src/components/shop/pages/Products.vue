@@ -27,7 +27,8 @@
       <div class="col-md-7">
         <ul class="products col-11 offset-1 row">
           <li v-for="item in filterProducts" :key="item.id" class="product_item col-12 col-sm-6">
-            <div class="item_img" :style="{ 'background-image': 'url(' + item.imageUrl + ')' }"></div>
+            <div class="item_img"
+            :style="{ 'background-image': 'url(' + item.imageUrl + ')' }"></div>
             <h3 class="item_title">
               {{ item.title }}
             </h3>
@@ -77,9 +78,8 @@ export default {
       const vm = this;
       if (this.page_status === 'all') {
         return this.products;
-      } else {
-        return this.products.filter(item => item.category === vm.page_status);
       }
+      return this.products.filter(item => item.category === vm.page_status);
     },
   },
   watch: {
