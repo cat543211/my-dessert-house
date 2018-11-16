@@ -142,7 +142,7 @@ export default {
 
 .products {
   @include media-breakpoint-up(sm) {
-    height: 80vh;
+    max-height: calc(100vh - 140px);
     overflow: scroll;
   }
 }
