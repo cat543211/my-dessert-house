@@ -26,7 +26,10 @@
       <!-- content -->
       <div class="col-md-7">
         <ul class="products col-11 offset-1 row">
-          <li v-for="item in filterProducts"
+          <li v-if="loadingStatus.loadingList">
+            <i class="fas fa-asterisk loading"></i>
+          </li>
+          <li v-else v-for="item in filterProducts"
           :key="item.id"
           class="product_item col-12 col-sm-6"
           data-target="#itemModal" data-toggle="modal"
@@ -48,7 +51,7 @@
     <div class="modal fade" id="itemModal" tabindex="-1"
     role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
-        <div class="modal-content" v-if="loadingItem">
+        <div class="modal-content" v-if="loadingStatus.loadingItem">
           <i class="fas fa-asterisk loading"></i>
         </div>
         <div class="modal-content" v-else>
@@ -105,7 +108,10 @@ export default {
         qty: 1,
         id: '',
       },
-      loadingItem: false,
+      loadingStatus: {
+        loadingItem: false,
+        loadingList: false,
+      },
     };
   },
   methods: {
@@ -120,6 +126,7 @@ export default {
       const vm = this;
       const api = `${process.env.API_PATH}/api/${process.env.API_USER}/products?page=${this.pager}`;
 
+      vm.loadingStatus.loadingList = true;
       this.$http.get(api).then((response) => {
         if (response.data.success) {
           const enabledProducts = response.data.products.filter(item => item.is_enabled);
@@ -127,13 +134,14 @@ export default {
         } else {
           vm.$bus.$emit('showError', response.data.message);
         }
+        vm.loadingStatus.loadingList = false;
       });
     },
     getProductDetail(item) {
       const vm = this;
       const api = `${process.env.API_PATH}/api/${process.env.API_USER}/product/${item.id}`;
 
-      vm.loadingItem = true;
+      vm.loadingStatus.loadingItem = true;
       vm.product = {};
       this.$http.get(api).then((response) => {
         if (response.data.success) {
@@ -141,7 +149,7 @@ export default {
         } else {
           vm.$bus.$emit('showError', response.data.message);
         }
-        vm.loadingItem = false;
+        vm.loadingStatus.loadingItem = false;
       });
     },
   },
@@ -295,17 +303,17 @@ export default {
   .item_qty {
     outline: none;
   }
+}
 
-  .loading {
-    position: relative;
-    margin: 50px auto;
-    left: 0;
-    right: 0;
-    color: $main_red;
-    &::before {
-      animation: ro 1s infinite linear;
-      position: absolute;
-    }
+.loading {
+  position: relative;
+  margin: 50px auto;
+  left: 0;
+  right: 0;
+  color: $main_red;
+  &::before {
+    animation: ro 1s infinite linear;
+    position: absolute;
   }
 }
 
