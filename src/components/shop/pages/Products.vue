@@ -26,7 +26,11 @@
       <!-- content -->
       <div class="col-md-7">
         <ul class="products col-11 offset-1 row">
-          <li v-for="item in filterProducts" :key="item.id" class="product_item col-12 col-sm-6">
+          <li v-for="item in filterProducts"
+          :key="item.id"
+          class="product_item col-12 col-sm-6"
+          data-target="#itemModal" data-toggle="modal"
+          @click.prevent="getProductDetail(item)">
             <div class="item_img"
             :style="{ 'background-image': 'url(' + item.imageUrl + ')' }"></div>
             <h3 class="item_title">
@@ -39,9 +43,56 @@
         </ul>
       </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="itemModal" tabindex="-1"
+    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content" v-if="loadingItem">
+          <i class="fas fa-asterisk loading"></i>
+        </div>
+        <div class="modal-content" v-else>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="col-10 offset-1 row">
+            <div class="col-12 col-sm-7">
+              <div class="item_img"
+              :style="{ 'background-image': 'url(' + product.imageUrl + ')' }"></div>
+            </div>
+            <div class="col-12 col-sm-5">
+              <h2>{{ product.title }}</h2>
+              <p>{{ product.description }}</p>
+              <div class="item_price" v-if="product.origin_price">
+                <h4> Origin price: {{ product.origin_price }}</h4>
+                <h4> New price: {{ product.price }}</h4>
+              </div>
+              <div class="item_price" v-else>
+                <h4> Price: {{ product.price }}</h4>
+              </div>
+              <span>Buy </span>
+              <select v-model.number="addItem.qty" class="item_qty">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+              <button type="button" class="btn item_btn"
+              @click.prevent="addToCart">Add to Cart</button>
+            </div>
+            <div class="col-12">
+              <p>{{ product.content }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
+import $ from 'jquery';
+
 export default {
   props: ['status'],
   data() {
@@ -49,6 +100,12 @@ export default {
       page_status: 'all',
       pager: 1,
       products: [],
+      product: {},
+      addItem: {
+        qty: 1,
+        id: '',
+      },
+      loadingItem: false,
     };
   },
   methods: {
@@ -70,6 +127,21 @@ export default {
         } else {
           vm.$bus.$emit('showError', response.data.message);
         }
+      });
+    },
+    getProductDetail(item) {
+      const vm = this;
+      const api = `${process.env.API_PATH}/api/${process.env.API_USER}/product/${item.id}`;
+
+      vm.loadingItem = true;
+      vm.product = {};
+      this.$http.get(api).then((response) => {
+        if (response.data.success) {
+          vm.product = response.data.product;
+        } else {
+          vm.$bus.$emit('showError', response.data.message);
+        }
+        vm.loadingItem = false;
       });
     },
   },
@@ -182,6 +254,67 @@ export default {
     @include media-breakpoint-down(sm) {
       display: none;
     }
+  }
+}
+
+.modal {
+  .modal-content {
+    padding-bottom: 20px;
+    border: none;
+  }
+  .close {
+    display: block;
+    text-align: right;
+    span {
+      font-size: 30px;
+      margin: 10px 20px;
+      display: inline-block;
+    }
+  }
+  .item_img {
+    width: 100%;
+    padding-bottom: 100%;
+  }
+  .item_img::before {
+    display: none;
+  }
+  .item_price h4 {
+    @include font_b($font_color: $main_gray, $font_size: 15px);
+    &:last-child {
+      @include font_b($font_color: $main_red, $font_size: 15px);
+    }
+  }
+
+  .item_btn {
+    background: $main_blue;
+    display: block;
+    margin: 10px 0;
+    width: 100%;
+  }
+
+  .item_qty {
+    outline: none;
+  }
+
+  .loading {
+    position: relative;
+    margin: 50px auto;
+    left: 0;
+    right: 0;
+    color: $main_red;
+    &::before {
+      animation: ro 1s infinite linear;
+      position: absolute;
+    }
+  }
+}
+
+@keyframes ro {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 </style>
