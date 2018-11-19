@@ -166,6 +166,10 @@ export default {
         }
         $('#itemModal').modal('hide');
         vm.loadingStatus.loadingItem = false;
+        vm.addItem = {
+          qty: 1,
+          product_id: '',
+        };
       });
     },
   },

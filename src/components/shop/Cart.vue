@@ -11,7 +11,12 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <ul class="col-10 offset-1 col-md-12 offset-md-0 no-gutters">
+          <ul class="col-10 offset-1 col-md-12 offset-md-0 no-gutters text-center" v-if="cartStatus.isEmpty">
+            <li>
+              <h3>Empty</h3>
+            </li>
+          </ul>
+          <ul class="col-10 offset-1 col-md-12 offset-md-0 no-gutters" v-else>
             <li v-for="item in cartList"
             class="cart_item col-12 row" :key="item.id">
               <div class="col-12 col-md-7">
@@ -25,7 +30,7 @@
                   <h4> Total: {{ item.total }}</h4>
                 </div>
                 <button type="button" class="btn item_btn"
-                @click.prevent="delItem">Delete</button>
+                @click.prevent="delItem(item.id)">Delete</button>
               </div>
             </li>
           </ul>
@@ -51,14 +56,29 @@ export default {
       const vm = this;
       const api = `${process.env.API_PATH}/api/${process.env.API_USER}/cart`;
 
-      vm.isLoading = true;
+      vm.cartStatus.isLoading = true;
       this.$http.get(api).then((response) => {
         if (response.data.success) {
           vm.cartList = response.data.data.carts;
+          vm.cartList.length == 0 ? vm.cartStatus.isEmpty = true : vm.cartStatus.isEmpty = false;
         } else {
           vm.$bus.$emit('showError', response.data.message);
         }
-        vm.isLoading = false;
+        vm.cartStatus.isLoading = false;
+      });
+    },
+    delItem(delId) {
+      const vm = this;
+      const api = `${process.env.API_PATH}/api/${process.env.API_USER}/cart/${delId}`;
+
+      vm.cartStatus.isLoading = true;
+      this.$http.delete(api).then((response) => {
+        if (response.data.success) {
+          vm.getCart();
+        } else {
+          vm.$bus.$emit('showError', response.data.message);
+        }
+        vm.cartStatus.isLoading = false;
       });
     },
   },
@@ -75,6 +95,7 @@ export default {
 <style lang="scss" scoped>
 .modal-content {
   border-radius: 0.3rem 0 0 0.3rem;
+  min-height: 100vh;
 }
 
 .modal.fade .modal-dialog {
@@ -91,5 +112,9 @@ export default {
 
 .modal.show .modal-dialog {
   transform: translate(0, 0);
+}
+
+.empty {
+  height: 100vh;
 }
 </style>
