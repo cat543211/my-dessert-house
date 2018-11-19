@@ -20,12 +20,12 @@
 </template>
 
 <script>
-import Cart from "./Cart";
+import Cart from './Cart';
 
 export default {
   components: {
     Cart,
-  }
+  },
 };
 </script>
 

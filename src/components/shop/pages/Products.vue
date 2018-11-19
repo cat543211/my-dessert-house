@@ -82,7 +82,7 @@
                 <option value="5">5</option>
               </select>
               <button type="button" class="btn item_btn"
-              @click.prevent="addToCart">Add to Cart</button>
+              @click.prevent="addToCart(product.id)">Add to Cart</button>
             </div>
             <div class="col-12">
               <p>{{ product.content }}</p>
@@ -106,7 +106,7 @@ export default {
       product: {},
       addItem: {
         qty: 1,
-        id: '',
+        product_id: '',
       },
       loadingStatus: {
         loadingItem: false,
@@ -149,6 +149,22 @@ export default {
         } else {
           vm.$bus.$emit('showError', response.data.message);
         }
+        vm.loadingStatus.loadingItem = false;
+      });
+    },
+    addToCart(addId) {
+      const vm = this;
+      const api = `${process.env.API_PATH}/api/${process.env.API_USER}/cart`;
+
+      vm.loadingStatus.loadingItem = true;
+      vm.addItem.product_id = addId;
+      this.$http.post(api, { data: vm.addItem }).then((response) => {
+        if (response.data.success) {
+          vm.$bus.$emit('refreshCart');
+        } else {
+          vm.$bus.$emit('showError', response.data.message);
+        }
+        $('#itemModal').modal('hide');
         vm.loadingStatus.loadingItem = false;
       });
     },

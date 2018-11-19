@@ -19,7 +19,7 @@
                 :style="{ 'background-image': 'url(' + item.product.imageUrl + ')' }"></div>
               </div>
               <div class="col-12 col-md-5">
-                <h3>{{ item.product.title }} x {{ item.qty }}</h3>
+                <h3>{{ item.product.title }} x {{ item.qty }}</h3>
                 <div class="item_price">
                   <h4> Price: {{ item.product.price }}</h4>
                   <h4> Total: {{ item.total }}</h4>
@@ -63,8 +63,12 @@ export default {
     },
   },
   created() {
+    const vm = this;
     this.getCart();
-  }
+    this.$bus.$on('refreshCart', () => {
+      vm.getCart();
+    });
+  },
 };
 </script>
 
