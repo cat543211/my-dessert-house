@@ -11,11 +11,23 @@
         <router-link class="nav-link" to="/coupons">Coupons</router-link>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Cart</a>
+        <a class="nav-link" href="#"
+        data-target="#cartModal" data-toggle="modal">Cart</a>
       </li>
     </ul>
+    <Cart />
   </div>
 </template>
+
+<script>
+import Cart from "./Cart";
+
+export default {
+  components: {
+    Cart,
+  }
+};
+</script>
 
 <style lang="scss" scoped>
 .nav {
