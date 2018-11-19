@@ -74,9 +74,9 @@
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label for="code">優惠碼</label>
-                    <input type="number" class="form-control" id="code"
+                    <input type="text" class="form-control" id="code"
                       placeholder="請輸入優惠碼（數字）"
-                      v-model.number="coupon.code">
+                      v-model="coupon.code">
                   </div>
                   <div class="form-group col-md-6">
                     <label for="percent">優惠%</label>
