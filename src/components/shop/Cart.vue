@@ -11,7 +11,8 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <ul class="col-10 offset-1 col-md-12 offset-md-0 no-gutters text-center" v-if="cartStatus.isEmpty">
+          <ul class="col-10 offset-1 col-md-12 offset-md-0 no-gutters text-center"
+          v-if="cartStatus.isEmpty">
             <li>
               <h3>Empty</h3>
             </li>
@@ -60,7 +61,7 @@ export default {
       this.$http.get(api).then((response) => {
         if (response.data.success) {
           vm.cartList = response.data.data.carts;
-          vm.cartList.length == 0 ? vm.cartStatus.isEmpty = true : vm.cartStatus.isEmpty = false;
+          vm.cartStatus.isEmpty = vm.cartList.length === 0;
         } else {
           vm.$bus.$emit('showError', response.data.message);
         }
