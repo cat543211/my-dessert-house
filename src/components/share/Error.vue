@@ -30,19 +30,17 @@ export default {
       this.messages.splice(item, 1);
     },
     setTime(item) {
-      const vm = this;
       setTimeout(() => {
         this.messages.forEach((msg, i) => {
           const isTimestampMatch = item === msg.timestamp;
-          if (isTimestampMatch) { vm.messages.splice(i, 1); }
+          if (isTimestampMatch) { this.messages.splice(i, 1); }
         });
       }, 3000);
     },
   },
   created() {
-    const vm = this;
     this.$bus.$on('showError', (msg) => {
-      vm.getMsg(msg);
+      this.getMsg(msg);
     });
   },
 };
