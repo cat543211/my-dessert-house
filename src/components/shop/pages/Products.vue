@@ -123,50 +123,47 @@ export default {
       }
     },
     getProducts() {
-      const vm = this;
       const api = `${process.env.API_PATH}/api/${process.env.API_USER}/products?page=${this.pager}`;
 
-      vm.loadingStatus.loadingList = true;
+      this.loadingStatus.loadingList = true;
       this.$http.get(api).then((response) => {
         if (response.data.success) {
           const enabledProducts = response.data.products.filter(item => item.is_enabled);
-          vm.products = enabledProducts;
+          this.products = enabledProducts;
         } else {
-          vm.$bus.$emit('showError', response.data.message);
+          this.$bus.$emit('showError', response.data.message);
         }
-        vm.loadingStatus.loadingList = false;
+        this.loadingStatus.loadingList = false;
       });
     },
     getProductDetail(item) {
-      const vm = this;
       const api = `${process.env.API_PATH}/api/${process.env.API_USER}/product/${item.id}`;
 
-      vm.loadingStatus.loadingItem = true;
-      vm.product = {};
+      this.loadingStatus.loadingItem = true;
+      this.product = {};
       this.$http.get(api).then((response) => {
         if (response.data.success) {
-          vm.product = response.data.product;
+          this.product = response.data.product;
         } else {
-          vm.$bus.$emit('showError', response.data.message);
+          this.$bus.$emit('showError', response.data.message);
         }
-        vm.loadingStatus.loadingItem = false;
+        this.loadingStatus.loadingItem = false;
       });
     },
     addToCart(addId) {
-      const vm = this;
       const api = `${process.env.API_PATH}/api/${process.env.API_USER}/cart`;
 
-      vm.loadingStatus.loadingItem = true;
-      vm.addItem.product_id = addId;
-      this.$http.post(api, { data: vm.addItem }).then((response) => {
+      this.loadingStatus.loadingItem = true;
+      this.addItem.product_id = addId;
+      this.$http.post(api, { data: this.addItem }).then((response) => {
         if (response.data.success) {
-          vm.$bus.$emit('refreshCart');
+          this.$bus.$emit('refreshCart');
         } else {
-          vm.$bus.$emit('showError', response.data.message);
+          this.$bus.$emit('showError', response.data.message);
         }
         $('#itemModal').modal('hide');
-        vm.loadingStatus.loadingItem = false;
-        vm.addItem = {
+        this.loadingStatus.loadingItem = false;
+        this.addItem = {
           qty: 1,
           product_id: '',
         };
@@ -175,11 +172,10 @@ export default {
   },
   computed: {
     filterProducts() {
-      const vm = this;
       if (this.page_status === 'all') {
         return this.products;
       }
-      return this.products.filter(item => item.category === vm.page_status);
+      return this.products.filter(item => item.category === this.page_status);
     },
   },
   watch: {
