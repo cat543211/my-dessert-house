@@ -40,10 +40,6 @@
     list-style: none;
   }
 
-  .btn {
-    @include font_b($font_size: 15px);
-  }
-
   a {
     text-decoration: none;
     position: relative;
@@ -61,6 +57,18 @@
   }
 
   a:hover::after {
+    width: 100%;
+  }
+
+  // btn
+  .btn {
+    @include font_b($font_size: 15px);
+  }
+
+  .item_btn {
+    background: $main_blue;
+    display: block;
+    margin: 10px 0;
     width: 100%;
   }
 
@@ -128,13 +136,6 @@
       &:last-child {
         @include font_b($font_color: $main_red, $font_size: 15px);
       }
-    }
-
-    .item_btn {
-      background: $main_blue;
-      display: block;
-      margin: 10px 0;
-      width: 100%;
     }
 
     .item_qty {
