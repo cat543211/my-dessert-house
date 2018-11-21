@@ -52,7 +52,7 @@ nav {
 .collapse {
   position: relative;
   height: 40px;
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(sm) {
     height: unset;
   }
 }
@@ -61,7 +61,7 @@ nav {
   position: absolute;
   right: 0;
   margin-top: 0;
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down(sm) {
     margin-top: 20px;
     position: relative;
   }

@@ -17,7 +17,7 @@ export default {
 
 <style lang="scss" scoped>
 .content {
-  margin-top: 80px;
+  margin-top: 120px;
   @include media-breakpoint-down(sm) {
     margin-top: 65px;
   }
