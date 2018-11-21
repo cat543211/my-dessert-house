@@ -5,7 +5,7 @@
     <!-- content -->
     <div class="col-md-7">
       <ul class="row col-12 col-md-10 offset-md-1 no-gutters">
-        <li v-if="status.orderLoading">
+        <li v-if="status.ordersLoading">
           <i class="fas fa-asterisk loading"></i>
         </li>
         <li class="order_item col-md-6 col-12 col-xl-4" v-for="(item, key) in orders"

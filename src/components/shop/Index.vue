@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid main">
-    <Header />
     <router-view class="content"></router-view>
+    <Header />
   </div>
 </template>
 
@@ -17,9 +17,9 @@ export default {
 
 <style lang="scss" scoped>
 .content {
-  margin-top: 50px;
+  margin-top: 120px;
   @include media-breakpoint-down(sm) {
-    margin-top: 0px;
+    margin-top: 65px;
   }
 }
 </style>
