@@ -11,6 +11,9 @@
         <router-link class="nav-link" to="/coupons">Coupons</router-link>
       </li>
       <li class="nav-item">
+        <router-link class="nav-link" to="/orders">Orders</router-link>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="#"
         data-target="#cartModal" data-toggle="modal">Cart</a>
       </li>

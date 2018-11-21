@@ -11,6 +11,7 @@ import Index from '@/components/shop/Index';
 import Home from '@/components/shop/pages/Home';
 import Products from '@/components/shop/pages/Products';
 import Coupons from '@/components/shop/pages/Coupons';
+import Orders from '@/components/shop/pages/Orders';
 
 Vue.use(Router);
 
@@ -36,6 +37,11 @@ export default new Router({
           path: 'coupons',
           name: 'Coupons',
           component: Coupons,
+        },
+        {
+          path: 'orders',
+          name: 'Orders',
+          component: Orders,
         },
       ],
     },
