@@ -24,6 +24,7 @@
           <li class="nav-item">
             <a class="nav-link" href="#"
             data-target="#cartModal" data-toggle="modal">Cart</a>
+            <div class="cart_num" v-if="cartNum > 0">{{cartNum}}</div>
           </li>
         </ul>
       </div>
@@ -38,6 +39,17 @@ import Cart from './Cart';
 export default {
   components: {
     Cart,
+  },
+  data() {
+    return {
+      cartNum: 0,
+    };
+  },
+  created() {
+    this.$bus.$emit('refreshCart');
+    this.$bus.$on('getCartNum', (num) => {
+      this.cartNum = num;
+    });
   },
 };
 </script>
@@ -72,5 +84,25 @@ nav {
 
 .router-link-exact-active {
   @include font_b($font_size: 15px);
+}
+
+.nav-item {
+  position: relative;
+
+  .cart_num {
+    position: absolute;
+    background: $main_red;
+    border: 5px solid $main_red;
+    top: -2px;
+    left: 35px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    line-height: 8px;
+    text-align: center;
+    opacity: 0.8;
+    cursor: default;
+    @include font_b($font_size: 10px);
+  }
 }
 </style>
