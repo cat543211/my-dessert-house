@@ -59,11 +59,11 @@
             <span aria-hidden="true">&times;</span>
           </button>
           <div class="col-10 offset-1 row">
-            <div class="col-12 col-sm-7">
+            <div class="col-12 col-sm-6">
               <div class="item_img"
               :style="{ 'background-image': 'url(' + product.imageUrl + ')' }"></div>
             </div>
-            <div class="col-12 col-sm-5">
+            <div class="col-12 col-sm-6">
               <h2>{{ product.title }}</h2>
               <p>{{ product.description }}</p>
               <div class="item_price" v-if="product.origin_price">
@@ -123,7 +123,7 @@ export default {
       }
     },
     getProducts() {
-      const api = `${process.env.API_PATH}/api/${process.env.API_USER}/products?page=${this.pager}`;
+      const api = `${process.env.API_PATH}/api/${process.env.API_USER}/products/all`;
 
       this.loadingStatus.loadingList = true;
       this.$http.get(api).then((response) => {
