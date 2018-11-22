@@ -36,21 +36,40 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <div class="col-10 offset-1 row">
+          <div class="col-10 offset-1 row no-gutters">
             <div class="col-12">
               <h2>Creat at: {{ getDate(order.create_at) }}</h2>
               <button class="btn item_btn"
               @click.prevent="payNow(order.id)" v-if="!order.is_paid">Pay</button>
               <h3 v-else>Paid date: {{ getDate(order.paid_date) }}</h3>
-              <p>{{ order.message }}</p>
-              <h3>Total price: {{ Math.floor(order.total) }}</h3>
             </div>
+            <ul class="col-12 products_content no-gutters">
+              <li class="product_item col-12 row"
+              v-for="item in order.products" :key="item.id">
+                <div class="col-12 col-md-6">
+                  <div class="item_img"
+                  :style="{ 'background-image': 'url(' + item.product.imageUrl + ')' }"></div>
+                </div>
+                <div class="col-12 col-md-6">
+                  <h3>{{ item.product.title }} x {{ item.qty }}</h3>
+                  <div class="item_price">
+                    <h4> Price: {{ item.product.price }}</h4>
+                    <h4> Total: {{ item.total }}</h4>
+                    <h4 v-if="item.coupon"> Coupon Price: {{ Math.floor(item.final_total) }}</h4>
+                  </div>
+                </div>
+              </li>
+              <h2 class="text-center">Total price: {{ Math.floor(order.total) }}</h2>
+            </ul>
             <div class="col-12 user_content">
-              <h3>User info</h3>
-              <p>Name: {{order.user.name}}</p>
-              <p>Phone: {{order.user.tel}}</p>
-              <p>Email: {{order.user.email}}</p>
-              <p>Address: {{order.user.address}}</p>
+              <div class="col-12">
+                <h2>User info</h2>
+                <p>Name: {{order.user.name}}</p>
+                <p>Phone: {{order.user.tel}}</p>
+                <p>Email: {{order.user.email}}</p>
+                <p>Address: {{order.user.address}}</p>
+                <p>Message: {{ order.message }}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -73,6 +92,7 @@ export default {
         ordersLoading: false,
         itemLoading: false,
       },
+      usedCoupon: false,
     };
   },
   methods: {
@@ -165,5 +185,9 @@ export default {
   padding-top: 20px;
   padding-bottom: 20px;
   border: 4px dashed $main_light_gray;
+}
+
+.products_content {
+  margin-top: 20px;
 }
 </style>
