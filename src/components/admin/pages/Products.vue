@@ -91,9 +91,12 @@
                   <div class="form-row">
                     <div class="form-group col-md-6">
                       <label for="category">分類</label>
-                      <input type="text" class="form-control" id="category"
-                        placeholder="請輸入分類"
+                      <select type="text" class="form-control" id="category"
                         v-model="product.category">
+                        <option value="cake">杯子蛋糕</option>
+                        <option value="donut">甜甜圈</option>
+                        <option value="sweet">甜點</option>
+                      </select>
                     </div>
                     <div class="form-group col-md-6">
                       <label for="price">單位</label>
@@ -223,7 +226,9 @@ export default {
       this.isNew = isNew;
 
       if (isNew) {
-        this.product = {};
+        this.product = {
+          category: 'cake',
+        };
       } else {
         this.product = { ...item };
       }

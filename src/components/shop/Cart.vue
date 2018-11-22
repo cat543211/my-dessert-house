@@ -34,7 +34,9 @@
                 <div class="item_price">
                   <h4> Price: {{ item.product.price }}</h4>
                   <h4> Total: {{ item.total }}</h4>
-                  <h4 v-if="usedCoupon && !hasNewItem"> Coupon Price: {{ item.final_total }}</h4>
+                  <h4 v-if="usedCoupon && !hasNewItem">
+                    Coupon Price: {{ Math.floor(item.final_total) }}
+                  </h4>
                 </div>
                 <button type="button" class="btn item_btn back"
                 @click.prevent="delItem(item.id)">Delete</button>
@@ -43,7 +45,7 @@
             <li class="cart_item col-12 row">
               <div class="col-12 total_price text-center">
                 <h2>Total Price: {{ total.origin_total }}</h2>
-                <h2 v-if="usedCoupon">Final Price: {{ total.final_total }}</h2>
+                <h2 v-if="usedCoupon">Final Price: {{ Math.floor(total.final_total) }}</h2>
               </div>
               <div class="col-12">
                 <button type="button" class="btn item_btn"
