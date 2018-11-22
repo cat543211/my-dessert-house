@@ -162,6 +162,7 @@ export default {
             this.usedCoupon = true;
           }
           if (this.usedCoupon) this.total.final_total = response.data.data.final_total;
+          this.$bus.$emit('getCartNum', this.cartList.length);
         } else {
           this.$bus.$emit('showError', response.data.message);
         }
